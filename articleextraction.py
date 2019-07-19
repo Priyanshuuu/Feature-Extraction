@@ -430,6 +430,54 @@ accuracy = train_model(classifier, xtrain_tfidf_ngram, y_train, xvalid_tfidf_ngr
 print ("NN, Ngram Level TF IDF Vectors",  accuracy)
 #classifier.predict(xtrain_tfidf_ngram)
 
+import trendfunc
+import pandas as pd
+soup_data = trendfunc.link_opener('https://blog.trendmicro.com/category/vulnerabilities/')
+import warnings
+warnings.filterwarnings(action='ignore')
+
+
+# headings extraction
+topic_list=[]
+topic_link_list=[]
+first_cat1=[]
+sec_cat1=[]
+thr_cat1=[]
+first_cat1_dates=[]
+sec_cat1_dates=[]
+thr_cat1_dates=[]
+cat=[]
+dates=[]
+articles=[]
+
+topics=soup_data.find_all("li", {"class","menu-item menu-item-type-taxonomy menu-item-object-category current-menu-item"})
+l=len(topics)
+url='https://thehackernews.com/'
+for topic in range(l) :
+    topicy= topics[topic].a.text
+    topic_list.append(topicy)
+    topic_list=topic_list[0:1]
+    link=topics[topic].a['href']
+    topic_link_list.append(link)
+    masterl=topic_link_list[0:1]
+    for topicl in range(len(masterl)):
+        if topicl==0:
+            first_cat1.append(trendfunc.link_opener(masterl[topicl]))
+
+master=[]  
+dic={}
+dic2={}
+dic3={}
+gen_list = [first_cat1[0]]
+
+
+    
+for ge in range(len(gen_list)):
+    if ge==0:
+        dic["arcticle_text1"]=trendfunc.article(gen_list[ge])
+        master.append(dic)
+text_arc1=dic["arcticle_text1"]
+
 def newdata_predictions(new_data):
     encoder = preprocessing.LabelEncoder()
     tfidf_vect_ngram = TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', ngram_range=(2,3), max_features=5000)
@@ -437,6 +485,7 @@ def newdata_predictions(new_data):
     predictions = classifier.predict(new_data)
     return predictions
     
-target_new_data = newdata_predictions(newdata)    
+target_new_data = newdata_predictions(text_arc1) 
+print(target_new_data)
     
     
