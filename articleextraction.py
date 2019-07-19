@@ -479,8 +479,6 @@ for ge in range(len(gen_list)):
 text_arc1=dic["arcticle_text1"]
 
 def newdata_predictions(new_data):
-    encoder = preprocessing.LabelEncoder()
-    tfidf_vect_ngram = TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', ngram_range=(2,3), max_features=5000)
     new_data =  tfidf_vect_ngram.transform(new_data)
     predictions = classifier.predict(new_data)
     return predictions
