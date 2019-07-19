@@ -429,3 +429,14 @@ classifier = create_model_architecture(xtrain_tfidf_ngram.shape[1])
 accuracy = train_model(classifier, xtrain_tfidf_ngram, y_train, xvalid_tfidf_ngram, is_neural_net=True)
 print ("NN, Ngram Level TF IDF Vectors",  accuracy)
 #classifier.predict(xtrain_tfidf_ngram)
+
+def newdata_predictions(new_data):
+    encoder = preprocessing.LabelEncoder()
+    tfidf_vect_ngram = TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', ngram_range=(2,3), max_features=5000)
+    new_data =  tfidf_vect_ngram.transform(new_data)
+    predictions = classifier.predict(new_data)
+    return predictions
+    
+target_new_data = newdata_predictions(newdata)    
+    
+    
