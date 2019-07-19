@@ -408,7 +408,7 @@ def train_model(classifier, feature_vector_train, label, feature_vector_valid, i
     if is_neural_net:
         predictions = predictions.argmax(axis=-1)
     
-    return metrics.accuracy_score(predictions,y_test )
+    return metrics.accuracy_score(predictions,y_test ), classifier
 
 
 def create_model_architecture(input_size):
@@ -426,7 +426,7 @@ def create_model_architecture(input_size):
     return classifier 
 
 classifier = create_model_architecture(xtrain_tfidf_ngram.shape[1])
-accuracy = train_model(classifier, xtrain_tfidf_ngram, y_train, xvalid_tfidf_ngram, is_neural_net=True)
+accuracy, classifier = train_model(classifier, xtrain_tfidf_ngram, y_train, xvalid_tfidf_ngram, is_neural_net=True)
 print ("NN, Ngram Level TF IDF Vectors",  accuracy)
 #classifier.predict(xtrain_tfidf_ngram)
 
@@ -478,12 +478,12 @@ for ge in range(len(gen_list)):
         master.append(dic)
 text_arc1=dic["arcticle_text1"]
 
-def newdata_predictions(new_data):
+def newdata_predictions(tfidf_vect_ngram, classifier, new_data):
     new_data =  tfidf_vect_ngram.transform(new_data)
     predictions = classifier.predict(new_data)
     return predictions
     
-target_new_data = newdata_predictions(text_arc1) 
+target_new_data = newdata_predictions(tfidf_vect_ngram, classifier, text_arc1) 
 print(target_new_data)
     
     
